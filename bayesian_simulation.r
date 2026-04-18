@@ -8,8 +8,9 @@ set.seed(1014)
 library(ggplot2)
 
 N <- 20
+
 # Simulate N Bernoulli trials with success probability 0.7
-shots <- ifelse(rbinom(N, size=1, prob=0.7) == 1, "goal", "miss")
+shots <- ifelse(rbinom(N, size = 1, prob = 0.7) == 1, "goal", "miss")
 
 # Goals count
 nGoal <- sum(shots == "goal")
@@ -65,7 +66,7 @@ p <- ggplot(df, aes(x = theta)) +
     theme(
         legend.position = "none",
         plot.title = element_text(size = 20, face = "bold", hjust = 0.5),
-        plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b=10)),
+        plot.subtitle = element_text(size = 12, hjust = 0.5, margin = margin(b = 10)),
         panel.grid.minor = element_blank()
     )  +
   annotate("text", x = prior_x, y = prior_y * 1.05,
@@ -76,6 +77,8 @@ p <- ggplot(df, aes(x = theta)) +
            label = "Posterior", color = "#8E44AD", fontface = "bold")
 
 print(sprintf("For %d shots, we had %d goals.", N, nGoal))
+posterior_mean <- (10 + nGoal) / (20 + N)
+mle <- nGoal / N
+print(sprintf("Posterior mean estimate of theta: %.3f, with the MLE of theta: %.3f", posterior_mean, mle))
 
-ggsave("prior_likelihood_posterior_plot.png", plot=p, width = 8, height = 5, dpi = 300)
-
+ggsave("plots/prior_likelihood_posterior.png", plot = p, width = 8, height = 5, dpi = 300)
